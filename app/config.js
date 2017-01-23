@@ -14,11 +14,12 @@ var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('players').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('players', function (link) {
-      link.increments('id').primary();
-      link.string('name', 255);
-      link.integer('userId');
-      link.timestamps();
+    db.knex.schema.createTable('players', function (player) {
+      player.increments('id').primary();
+      player.string('name', 255);
+      player.string('cohort', 255);
+      player.integer('userId');
+      player.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
     });
@@ -27,12 +28,12 @@ db.knex.schema.hasTable('players').then(function(exists) {
 
 db.knex.schema.hasTable('games').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('players', function (link) {
-      link.increments('id').primary();
-      link.boolean('win');
-      link.string('winType');
-      link.integer('userId');
-      link.timestamps();
+    db.knex.schema.createTable('games', function (game) {
+      game.increments('id').primary();
+      game.boolean('win');
+      game.string('winType');
+      game.integer('userId');
+      game.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
     });
@@ -41,13 +42,13 @@ db.knex.schema.hasTable('games').then(function(exists) {
 
 db.knex.schema.hasTable('matches').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('matches', function (link) {
-      link.increments('id').primary();
-      link.integer('gameId');
-      link.integer('playerId');
-      link.boolean('alliance');
-      link.string('allianceRole');
-      link.timestamps();
+    db.knex.schema.createTable('matches', function (match) {
+      match.increments('id').primary();
+      match.integer('gameId');
+      match.integer('playerId');
+      match.boolean('alliance');
+      match.string('allianceRole');
+      match.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
     });
@@ -66,3 +67,5 @@ db.knex.schema.hasTable('users').then(function(exists) {
     });
   }
 });
+
+module.exports = db;

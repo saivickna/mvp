@@ -8,10 +8,10 @@ var Players = require('../app/collections/players');
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser('shhhh, very secret'));
-app.use(session({secret: 'shhhh, very secret',
-  resave: true,
-    saveUninitialized: true}));
+// app.use(cookieParser('shhhh, very secret'));
+// app.use(session({secret: 'shhhh, very secret',
+//   resave: true,
+//     saveUninitialized: true}));
 
 var restrict = function (req, res, next) {
   if (req.session.user) {
@@ -22,20 +22,37 @@ var restrict = function (req, res, next) {
   }
 };
 
+// app.get('/games', restrict, function(req, res) {
+//     Games.reset().query(function(qb) {
+//       qb.where('userId', '=', req.body.userId);
+//     }).fetch().then(function(games) {
+//       res.status(200).send(games.models);
+//     });
+// });
+
 app.get('/games', restrict, function(req, res) {
-    Games.reset().query(function(qb) {
-      qb.where('userId', '=', req.body.userId);
-    }).fetch().then(function(games) {
-      res.status(200).send(games.models);
-    });
+  Games.reset().fetch().then(function(games) {
+    res.status(200).send(games.models);
+  });
 });
 
-app.get('/players', restrict, function(req, res) {
-    Players.reset().query(function(qb) {
-      qb.where('userId', '=', req.body.userId);
-    }).fetch().then(function(players) {
-      res.status(200).send(players.models);
-    });
+// app.get('/players', restrict, function(req, res) {
+//     Players.reset().query(function(qb) {
+//       qb.where('userId', '=', req.body.userId);
+//     }).fetch().then(function(players) {
+//       res.status(200).send(players.models);
+//     });
+// });
+
+app.get('/players', function(req, res) {
+  Players.reset().fetch().then(function(players) {
+    res.status(200).send(players.models);
+  });
+});
+
+app.post('/post', function(req, res) {
+    
+  Players.create({name: req.body.name, cohort: req.body.cohort, userId: 0}).then(player => res.status(201).send(student));
 });
 
 
@@ -114,3 +131,5 @@ app.get('/logout', function(req, res) {
     //res.render('login');
   });
 });
+
+module.exports = app;
