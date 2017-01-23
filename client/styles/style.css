@@ -1,0 +1,15 @@
+.title {
+  text-align: center;
+}
+
+.nav {
+  margin-bottom: 10px;
+}
+
+.playerBtn {
+  margin:auto;
+  margin-top: 10px;
+  width: 25%;
+  display: block;
+  /*width: 100px;*/
+}

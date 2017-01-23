@@ -1,0 +1,37 @@
+{
+  "name": "avalon-stats",
+  "version": "1.0.0",
+  "description": "Maintain Avalon Statistics",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saivickna/avalon-stats.git"
+  },
+  "author": "Saivickna Raveendran",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/saivickna/avalon-stats/issues"
+  },
+  "homepage": "https://github.com/saivickna/avalon-stats#readme",
+  "dependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.16.0",
+    "bookshelf": "^0.10.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "jquery": "^3.1.1",
+    "knex": "^0.12.6",
+    "live-server": "^1.2.0",
+    "lodash": "^4.17.4",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "underscore": "^1.8.3"
+  }
+}
