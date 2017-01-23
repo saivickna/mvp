@@ -1,4 +1,4 @@
-# Project Name #
+# Avalon Stats #
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -17,28 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > A program for displaying you and your friend's performance at the board game Avalon.
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > Track stats by adding players, games, and seeing how everyone did
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > The program relies on REACT for the front end, and Express and Node for the backend.
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > Allows users to track stats so that they can work to improve their Avalon skills or better balance teams
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > Track stats.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > Avalon is great! You should join us playing at lunch!
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Just connect to the website, add players and add games
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "Now I know I statistically beat my friends" - Derrick Chan
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Start playing now!
