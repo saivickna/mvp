@@ -4,7 +4,8 @@
   "description": "Maintain Avalon Statistics",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "nodemon --watch server --watch app server/index.js"
   },
   "repository": {
     "type": "git",
