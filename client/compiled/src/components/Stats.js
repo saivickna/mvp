@@ -17,130 +17,46 @@ var Stats = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Stats.__proto__ || Object.getPrototypeOf(Stats)).call(this, props));
 
     _this.state = {
-      matches: [],
-      players: []
+      playerStats: true,
+      gameRatio: true
     };
     return _this;
   }
 
   _createClass(Stats, [{
-    key: "componentWillMount",
-    value: function componentWillMount() {
-      var self = this;
-      window.getMatches(function (body) {
-        if (body === 'undefined') {} else {
-          self.setState({ matches: body });
-
-          var player = {};
-          for (var x in body) {
-            if (!player[body[x].playerId]) {
-              player[body[x].playerId] = { wins: 0, losses: 0, name: body[x].players.name, arthurWins: 0, mordredWins: 0 };
-            }
-            if (body[x].games.win === body[x].alliance) {
-              player[body[x].playerId].wins++;
-              if (body[x].alliance === 0) {
-                player[body[x].playerId].arthurWins++;
-              } else {
-                player[body[x].playerId].mordredWins++;
-              }
-            } else {
-              player[body[x].playerId].losses++;
-            }
-          }
-          var playerList = [];
-          for (var x in player) {
-            playerList.push(player[x]);
-          }
-          self.setState({ players: playerList });
-        }
-      });
+    key: "changeStats",
+    value: function changeStats(e) {
+      if (e.target.value === 'Player Table Stats') {
+        this.setState({ playerStats: true, gameRatio: false });
+      } else {
+        this.setState({ playerStats: false, gameRatio: true });
+      }
     }
   }, {
     key: "render",
     value: function render() {
       return React.createElement(
         "div",
-        { className: "row clearfix" },
+        null,
         React.createElement(
-          "div",
-          { className: "col-md-12 column" },
+          "select",
+          { onChange: this.changeStats.bind(this), className: "form-control selectstats" },
           React.createElement(
-            "table",
-            { id: "example", className: "table table-bordered table-hover", cellSpacing: "0", width: "100%" },
-            React.createElement(
-              "thead",
-              null,
-              React.createElement(
-                "tr",
-                null,
-                React.createElement(
-                  "th",
-                  null,
-                  "Name"
-                ),
-                React.createElement(
-                  "th",
-                  null,
-                  "Wins"
-                ),
-                React.createElement(
-                  "th",
-                  null,
-                  "Losses"
-                ),
-                React.createElement(
-                  "th",
-                  null,
-                  "Good Guy Wins"
-                ),
-                React.createElement(
-                  "th",
-                  null,
-                  "Bad Guy Wins"
-                )
-              )
-            ),
-            React.createElement(
-              "tbody",
-              null,
-              this.state.players.map(function (player) {
-                return React.createElement(
-                  "tr",
-                  null,
-                  React.createElement(
-                    "td",
-                    null,
-                    player.name
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    player.wins
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    player.losses
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    player.arthurWins
-                  ),
-                  React.createElement(
-                    "td",
-                    null,
-                    player.mordredWins
-                  )
-                );
-              })
-            )
+            "option",
+            null,
+            "Player Table Stats"
+          ),
+          React.createElement(
+            "option",
+            null,
+            "Win Ratio"
           )
-        )
+        ),
+        this.state.playerStats ? React.createElement(PlayerStats, null) : React.createElement(GameRatio, null)
       );
     }
   }]);
 
   return Stats;
 }(React.Component);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21wb25lbnRzL1N0YXRzLmpzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0lBQU07OztBQUNKLGlCQUFZLEtBQVosRUFBbUI7Ozs4R0FDWCxRQURXOztBQUVqQixVQUFLLEtBQUwsR0FBYTtBQUNYLGVBQVMsRUFBVDtBQUNBLGVBQVMsRUFBVDtLQUZGLENBRmlCOztHQUFuQjs7Ozt5Q0FPcUI7QUFDbkIsVUFBSSxPQUFPLElBQVAsQ0FEZTtBQUVuQixhQUFPLFVBQVAsQ0FBa0IsVUFBQyxJQUFELEVBQVU7QUFDMUIsWUFBSSxTQUFTLFdBQVQsRUFBc0IsRUFBMUIsTUFDTztBQUNMLGVBQUssUUFBTCxDQUFjLEVBQUMsU0FBUyxJQUFULEVBQWYsRUFESzs7QUFHTCxjQUFJLFNBQVMsRUFBVCxDQUhDO0FBSUwsZUFBSyxJQUFJLENBQUosSUFBUyxJQUFkLEVBQW9CO0FBQ2xCLGdCQUFJLENBQUUsT0FBTyxLQUFLLENBQUwsRUFBUSxRQUFSLENBQVQsRUFBNkI7QUFDL0IscUJBQU8sS0FBSyxDQUFMLEVBQVEsUUFBUixDQUFQLEdBQTJCLEVBQUMsTUFBSyxDQUFMLEVBQVEsUUFBTyxDQUFQLEVBQVUsTUFBSyxLQUFLLENBQUwsRUFBUSxPQUFSLENBQWdCLElBQWhCLEVBQXNCLFlBQVksQ0FBWixFQUFlLGFBQWEsQ0FBYixFQUF4RixDQUQrQjthQUFqQztBQUdBLGdCQUFJLEtBQUssQ0FBTCxFQUFRLEtBQVIsQ0FBYyxHQUFkLEtBQXNCLEtBQUssQ0FBTCxFQUFRLFFBQVIsRUFBa0I7QUFDMUMscUJBQU8sS0FBSyxDQUFMLEVBQVEsUUFBUixDQUFQLENBQXlCLElBQXpCLEdBRDBDO0FBRTFDLGtCQUFJLEtBQUssQ0FBTCxFQUFRLFFBQVIsS0FBcUIsQ0FBckIsRUFBd0I7QUFDMUIsdUJBQU8sS0FBSyxDQUFMLEVBQVEsUUFBUixDQUFQLENBQXlCLFVBQXpCLEdBRDBCO2VBQTVCLE1BRU87QUFDTCx1QkFBTyxLQUFLLENBQUwsRUFBUSxRQUFSLENBQVAsQ0FBeUIsV0FBekIsR0FESztlQUZQO2FBRkYsTUFPTztBQUNMLHFCQUFPLEtBQUssQ0FBTCxFQUFRLFFBQVIsQ0FBUCxDQUF5QixNQUF6QixHQURLO2FBUFA7V0FKRjtBQWVBLGNBQUksYUFBYSxFQUFiLENBbkJDO0FBb0JMLGVBQUksSUFBSSxDQUFKLElBQVMsTUFBYixFQUFxQjtBQUNuQix1QkFBVyxJQUFYLENBQWdCLE9BQU8sQ0FBUCxDQUFoQixFQURtQjtXQUFyQjtBQUdBLGVBQUssUUFBTCxDQUFjLEVBQUMsU0FBUyxVQUFULEVBQWYsRUF2Qks7U0FEUDtPQURnQixDQUFsQixDQUZtQjs7Ozs2QkErQlg7QUFDUixhQUNFOztVQUFLLFdBQVUsY0FBVixFQUFMO1FBQ0U7O1lBQUssV0FBVSxrQkFBVixFQUFMO1VBQ0U7O2NBQU8sSUFBRyxTQUFILEVBQWEsV0FBVSxrQ0FBVixFQUE2QyxhQUFZLEdBQVosRUFBZ0IsT0FBTSxNQUFOLEVBQWpGO1lBQ0k7OztjQUNFOzs7Z0JBQ0k7Ozs7aUJBREo7Z0JBRUk7Ozs7aUJBRko7Z0JBR0k7Ozs7aUJBSEo7Z0JBSUk7Ozs7aUJBSko7Z0JBS0k7Ozs7aUJBTEo7ZUFERjthQURKO1lBVUU7OztjQUNHLEtBQUssS0FBTCxDQUFXLE9BQVgsQ0FBbUIsR0FBbkIsQ0FBdUI7dUJBQVc7OztrQkFBSTs7O29CQUFLLE9BQU8sSUFBUDttQkFBVDtrQkFBMEI7OztvQkFBSyxPQUFPLElBQVA7bUJBQS9CO2tCQUFnRDs7O29CQUFLLE9BQU8sTUFBUDttQkFBckQ7a0JBQXdFOzs7b0JBQUssT0FBTyxVQUFQO21CQUE3RTtrQkFBb0c7OztvQkFBSyxPQUFPLFdBQVA7bUJBQXpHOztlQUFYLENBRDFCO2FBVkY7V0FERjtTQURGO09BREYsQ0FEUTs7Ozs7RUF2Q1EsTUFBTSxTQUFOIiwiZmlsZSI6IlN0YXRzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiY2xhc3MgU3RhdHMgZXh0ZW5kcyBSZWFjdC5Db21wb25lbnQge1xuICBjb25zdHJ1Y3Rvcihwcm9wcykge1xuICAgIHN1cGVyKHByb3BzKTtcbiAgICB0aGlzLnN0YXRlID0ge1xuICAgICAgbWF0Y2hlczogW10sXG4gICAgICBwbGF5ZXJzOiBbXVxuICAgIH1cbiAgfVxuICBjb21wb25lbnRXaWxsTW91bnQoKSB7XG4gICAgdmFyIHNlbGYgPSB0aGlzO1xuICAgIHdpbmRvdy5nZXRNYXRjaGVzKChib2R5KSA9PiB7XG4gICAgICBpZiAoYm9keSA9PT0gJ3VuZGVmaW5lZCcpIHtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIHNlbGYuc2V0U3RhdGUoe21hdGNoZXM6IGJvZHl9KTtcblxuICAgICAgICB2YXIgcGxheWVyID0ge307XG4gICAgICAgIGZvciAodmFyIHggaW4gYm9keSkge1xuICAgICAgICAgIGlmICghKHBsYXllcltib2R5W3hdLnBsYXllcklkXSkpIHtcbiAgICAgICAgICAgIHBsYXllcltib2R5W3hdLnBsYXllcklkXSA9IHt3aW5zOjAsIGxvc3NlczowLCBuYW1lOmJvZHlbeF0ucGxheWVycy5uYW1lLCBhcnRodXJXaW5zOiAwLCBtb3JkcmVkV2luczogMH07XG4gICAgICAgICAgfVxuICAgICAgICAgIGlmIChib2R5W3hdLmdhbWVzLndpbiA9PT0gYm9keVt4XS5hbGxpYW5jZSkge1xuICAgICAgICAgICAgcGxheWVyW2JvZHlbeF0ucGxheWVySWRdLndpbnMrKztcbiAgICAgICAgICAgIGlmIChib2R5W3hdLmFsbGlhbmNlID09PSAwKSB7XG4gICAgICAgICAgICAgIHBsYXllcltib2R5W3hdLnBsYXllcklkXS5hcnRodXJXaW5zKys7XG4gICAgICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgICAgICBwbGF5ZXJbYm9keVt4XS5wbGF5ZXJJZF0ubW9yZHJlZFdpbnMrKztcbiAgICAgICAgICAgIH1cbiAgICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgICAgcGxheWVyW2JvZHlbeF0ucGxheWVySWRdLmxvc3NlcysrO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgICB2YXIgcGxheWVyTGlzdCA9IFtdO1xuICAgICAgICBmb3IodmFyIHggaW4gcGxheWVyKSB7XG4gICAgICAgICAgcGxheWVyTGlzdC5wdXNoKHBsYXllclt4XSk7XG4gICAgICAgIH1cbiAgICAgICAgc2VsZi5zZXRTdGF0ZSh7cGxheWVyczogcGxheWVyTGlzdH0pO1xuICAgICAgfVxuICAgIH0pO1xuICB9XG4gIHJlbmRlciAoKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwicm93IGNsZWFyZml4XCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sLW1kLTEyIGNvbHVtblwiPlxuICAgICAgICAgIDx0YWJsZSBpZD1cImV4YW1wbGVcIiBjbGFzc05hbWU9XCJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1ob3ZlclwiIGNlbGxTcGFjaW5nPVwiMFwiIHdpZHRoPVwiMTAwJVwiPlxuICAgICAgICAgICAgICA8dGhlYWQ+XG4gICAgICAgICAgICAgICAgPHRyPlxuICAgICAgICAgICAgICAgICAgICA8dGg+TmFtZTwvdGg+XG4gICAgICAgICAgICAgICAgICAgIDx0aD5XaW5zPC90aD5cbiAgICAgICAgICAgICAgICAgICAgPHRoPkxvc3NlczwvdGg+XG4gICAgICAgICAgICAgICAgICAgIDx0aD5Hb29kIEd1eSBXaW5zPC90aD5cbiAgICAgICAgICAgICAgICAgICAgPHRoPkJhZCBHdXkgV2luczwvdGg+XG4gICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgIDwvdGhlYWQ+XG4gICAgICAgICAgICA8dGJvZHk+XG4gICAgICAgICAgICAgIHt0aGlzLnN0YXRlLnBsYXllcnMubWFwKHBsYXllciA9PiAoPHRyPjx0ZD57cGxheWVyLm5hbWV9PC90ZD48dGQ+e3BsYXllci53aW5zfTwvdGQ+PHRkPntwbGF5ZXIubG9zc2VzfTwvdGQ+PHRkPntwbGF5ZXIuYXJ0aHVyV2luc308L3RkPjx0ZD57cGxheWVyLm1vcmRyZWRXaW5zfTwvdGQ+PC90cj4pKX1cbiAgICAgICAgICAgIDwvdGJvZHk+XG4gICAgICAgICAgPC90YWJsZT5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICAgICk7XG4gIH1cbn0iXX0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21wb25lbnRzL1N0YXRzLmpzeCJdLCJuYW1lcyI6WyJTdGF0cyIsInByb3BzIiwic3RhdGUiLCJwbGF5ZXJTdGF0cyIsImdhbWVSYXRpbyIsImUiLCJ0YXJnZXQiLCJ2YWx1ZSIsInNldFN0YXRlIiwiY2hhbmdlU3RhdHMiLCJiaW5kIiwiUmVhY3QiLCJDb21wb25lbnQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7SUFBTUEsSzs7O0FBQ0osaUJBQVlDLEtBQVosRUFBbUI7QUFBQTs7QUFBQSw4R0FDWEEsS0FEVzs7QUFFakIsVUFBS0MsS0FBTCxHQUFhO0FBQ1hDLG1CQUFhLElBREY7QUFFWEMsaUJBQVc7QUFGQSxLQUFiO0FBRmlCO0FBTWxCOzs7O2dDQUNZQyxDLEVBQUc7QUFDZCxVQUFJQSxFQUFFQyxNQUFGLENBQVNDLEtBQVQsS0FBbUIsb0JBQXZCLEVBQTZDO0FBQzNDLGFBQUtDLFFBQUwsQ0FBYyxFQUFDTCxhQUFhLElBQWQsRUFBb0JDLFdBQVcsS0FBL0IsRUFBZDtBQUNELE9BRkQsTUFFTztBQUNMLGFBQUtJLFFBQUwsQ0FBYyxFQUFDTCxhQUFhLEtBQWQsRUFBcUJDLFdBQVcsSUFBaEMsRUFBZDtBQUNEO0FBQ0Y7Ozs2QkFFUztBQUNSLGFBQ0U7QUFBQTtBQUFBO0FBQ0U7QUFBQTtBQUFBLFlBQVEsVUFBVSxLQUFLSyxXQUFMLENBQWlCQyxJQUFqQixDQUFzQixJQUF0QixDQUFsQixFQUErQyxXQUFVLDBCQUF6RDtBQUNFO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FERjtBQUVFO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFGRixTQURGO0FBS0csYUFBS1IsS0FBTCxDQUFXQyxXQUFYLEdBQXlCLG9CQUFDLFdBQUQsT0FBekIsR0FBMkMsb0JBQUMsU0FBRDtBQUw5QyxPQURGO0FBU0Q7Ozs7RUExQmlCUSxNQUFNQyxTIiwiZmlsZSI6IlN0YXRzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiY2xhc3MgU3RhdHMgZXh0ZW5kcyBSZWFjdC5Db21wb25lbnQge1xyXG4gIGNvbnN0cnVjdG9yKHByb3BzKSB7XHJcbiAgICBzdXBlcihwcm9wcyk7XHJcbiAgICB0aGlzLnN0YXRlID0ge1xyXG4gICAgICBwbGF5ZXJTdGF0czogdHJ1ZSxcclxuICAgICAgZ2FtZVJhdGlvOiB0cnVlXHJcbiAgICB9XHJcbiAgfVxyXG4gIGNoYW5nZVN0YXRzIChlKSB7XHJcbiAgICBpZiAoZS50YXJnZXQudmFsdWUgPT09ICdQbGF5ZXIgVGFibGUgU3RhdHMnKSB7XHJcbiAgICAgIHRoaXMuc2V0U3RhdGUoe3BsYXllclN0YXRzOiB0cnVlLCBnYW1lUmF0aW86IGZhbHNlfSk7XHJcbiAgICB9IGVsc2Uge1xyXG4gICAgICB0aGlzLnNldFN0YXRlKHtwbGF5ZXJTdGF0czogZmFsc2UsIGdhbWVSYXRpbzogdHJ1ZX0pO1xyXG4gICAgfVxyXG4gIH1cclxuXHJcbiAgcmVuZGVyICgpIHtcclxuICAgIHJldHVybiAoXHJcbiAgICAgIDxkaXY+XHJcbiAgICAgICAgPHNlbGVjdCBvbkNoYW5nZT17dGhpcy5jaGFuZ2VTdGF0cy5iaW5kKHRoaXMpfSBjbGFzc05hbWU9XCJmb3JtLWNvbnRyb2wgc2VsZWN0c3RhdHNcIj5cclxuICAgICAgICAgIDxvcHRpb24+UGxheWVyIFRhYmxlIFN0YXRzPC9vcHRpb24+XHJcbiAgICAgICAgICA8b3B0aW9uPldpbiBSYXRpbzwvb3B0aW9uPlxyXG4gICAgICAgIDwvc2VsZWN0PlxyXG4gICAgICAgIHt0aGlzLnN0YXRlLnBsYXllclN0YXRzID8gPFBsYXllclN0YXRzIC8+IDogPEdhbWVSYXRpbyAvPn1cclxuICAgICAgPC9kaXY+XHJcbiAgICApO1xyXG4gIH1cclxufSJdfQ==

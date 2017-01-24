@@ -21,28 +21,37 @@ class App extends React.Component {
     this.setState({statsActive: false, gameActive: false, playerActive: true});
   }
   render() {
-    if (this.state.playerActive) {
+    // if (this.state.playerActive) {
+    //   return (
+    //     <div>
+    //       <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
+    //       <Player />
+
+    //     </div>
+    //   );
+    // } else if (this.state.gameActive){
+    //   return (
+    //     <div>
+    //       <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
+    //       <Game />
+    //     </div>
+    //   );
+    // } else {
+    //   return (
+    //     <div>
+    //       <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
+    //       <Stats />
+    //     </div>
+    //   );   
+    // }
       return (
         <div>
           <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
-          <Player />
+          {this.state.playerActive ? <Player /> : this.state.gameActive ? <Game /> :  <Stats />}
         </div>
       );
-    } else if (this.state.gameActive){
-      return (
-        <div>
-          <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
-          <Game />
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
-          <Stats />
-        </div>
-      );   
-    }
+
+
   
 
   }

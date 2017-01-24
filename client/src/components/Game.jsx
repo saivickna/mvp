@@ -10,7 +10,6 @@ class Game extends React.Component {
     }
   }
   submitGame() {
-    // console.log('test');
     if (this.state.players.length === 0) {
       alert('Please add players');
     } else {
@@ -18,10 +17,7 @@ class Game extends React.Component {
       game.win = this.state.arthur ? 0 : 1;
       game.winType = this.state.arthur ? 'Servants of Arthur Win' : this.state.mordred ? 'Minions of Mordred Win' : 'Assassin Kills Merlin';
       game.players = this.state.players;
-      // console.log(game);
       window.postGame(game, () => {
-        console.log('came back');
-        // this.forceUpdate();
         this.setState({players: []});
       });
     }

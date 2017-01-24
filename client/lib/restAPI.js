@@ -63,6 +63,27 @@ var getMatches = function (callback) {
   }).catch (err => callback('undefined'));
 }
 
+var getGames = function (callback) {
+  var myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('access-control-allow-origin', '*');
+  var myInit = {
+    method: 'GET',
+    mode: 'cors',
+    headers: myHeaders
+  }
+  fetch('http://127.0.0.1:4568/games', myInit).then(function(response) {
+    if (response.ok) {
+      response.json().then(res => {
+        callback(res); }
+        ).catch(err => {callback('undefined')});
+      callback(response.body);
+    } else {
+      callback('undefined');
+    }
+  }).catch (err => callback('undefined'));
+}
+
 var postGame = (game, callback) => {
   var myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
@@ -89,3 +110,4 @@ window.postPlayer = postPlayer;
 window.postGame = postGame;
 window.getPlayers = getPlayers;
 window.getMatches = getMatches;
+window.getGames = getGames;

@@ -9,7 +9,6 @@ class PlayerOptions extends React.Component {
     var self = this;
     window.getPlayers((body) => {
       if (body === 'undefined') {
-        console.log('Failure');
       } else {
         this.setState({players: body});
       }
