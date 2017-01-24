@@ -17,8 +17,8 @@ class PlayerOptions extends React.Component {
   }
   render () {
     return (
-      <select className="form-control">
-        {this.state.players.map(player => <option>{player.name}</option>)}
+      <select onChange={this.props.changePerson} className="form-control">
+        {this.state.players.map(player => <option value={player.id}>{player.name}</option>)}
       </select>
     )
 

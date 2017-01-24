@@ -70,11 +70,14 @@ app.post('/games', function(req, res) {
     var total = Object.keys(players).length;
     for (var player in players) {
       players[player].gameId = game.id;
+      players[player].playerId = players[player].id;
+      delete players[player].id;
+      delete players[player].name;
       new Match(players[player]).save()
       .then(function (saved) {
         count++;
         if (count === total) {
-          res.status(201).send('');
+          res.status(201).send(JSON.stringify(saved));
         }
       });
     }

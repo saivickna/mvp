@@ -43,20 +43,25 @@ var getPlayers = function (callback) {
 }
 
 var postGame = (game, callback) => {
+  var myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('access-control-allow-origin', '*');
   var myInit = {
     method: 'POST',
-    headers: (new Headers()).append('Content-Type', 'application/json'),
+    mode: 'cors',
+    headers: myHeaders,
     body: JSON.stringify(game)
   }
-  fetch('http://localhost:4568/games', myInit).then(function(response) {
+  fetch('http://127.0.0.1:4568/games', myInit).then(function(response) {
     if (response.ok) {
-      response.json.then(function(data) {
-        callback(data);
-      });
+        // response.json.then(function(data) {
+        //   callback(data);
+        // });
+      callback();
     } else {
       console.log('Network response was not ok');
     }
-  });
+  }).catch (err => console.log(err));
 }
 
 window.postPlayer = postPlayer;

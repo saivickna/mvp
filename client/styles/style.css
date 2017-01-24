@@ -30,3 +30,7 @@
 .winCriteria label {
   padding-left: 50px;
 }
+
+#delete_row {
+  margin-left: 20px;
+}
