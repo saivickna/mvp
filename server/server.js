@@ -7,6 +7,7 @@ var Games = require('../app/collections/games');
 var Player = require('../app/models/player');
 var Players = require('../app/collections/players');
 var Match = require('../app/models/match');
+var helpers = require('./helpers.js');
 var cors = require('cors');
 var Matches = require('../app/collections/matches');
 var Promise = require('bluebird');
@@ -41,9 +42,16 @@ app.options('*', cors())
 // });
 
 app.get('/games', function(req, res) {
-  Games.reset().fetch().then(function(games) {
-    res.status(200).send(games.models);
-  });
+  helpers.checkAuth(req, (user) => {
+    Games.reset().query(function (qb) {
+             qb.where({'userId': user.id});
+            }).fetch().then(function(games) {
+      res.status(200).send(games.models);
+    });    
+  })
+  // Games.reset().fetch().then(function(games) {
+  //   res.status(200).send(games.models);
+  // });
 });
 
 // app.get('/players', restrict, function(req, res) {
@@ -55,26 +63,49 @@ app.get('/games', function(req, res) {
 // });
 
 app.get('/players', function(req, res) {
-  Players.reset().fetch().then(function(players) {
-    res.status(200).send(players.models);
-  });
+  helpers.checkAuth(req, (user) => {
+    Players.reset().query(function (qb) {
+             qb.where({'userId': user.id});
+            }).fetch().then(function(players) {
+      res.status(200).send(players.models);
+    });  
+  })
+
 });
 
 app.get('/matches', function(req, res) {
-  Match.query(function (qb) {
-   qb.innerJoin('players', 'matches.playerId', 'players.id');
-   qb.innerJoin('games', 'matches.gameId', 'games.id');
-  }).fetchAll({ withRelated: ['players', 'games'] }).then(function(matches) {
-    res.status(200).send(matches);
-  });
+  helpers.checkAuth(req, (user) => {
+    Match.query(function (qb) {
+      qb.innerJoin('players', 'matches.playerId', 'players.id');
+      //qb.innerJoin('games', 'matches.gameId', 'games.id');
+      qb.innerJoin('games', function () {
+              this.on('matches.gameId', '=', 'games.id')
+                  .andOn('games.userId', '=', user.id);
+          });
+    }).fetchAll({ withRelated: ['players', 'games'] }).then(function(matches) {
+      res.status(200).send(matches);
+    });
+  })
+
+
+  // Match.query(function (qb) {
+  //  qb.innerJoin('players', 'matches.playerId', 'players.id');
+  //  qb.innerJoin('games', 'matches.gameId', 'games.id');
+  // }).fetchAll({ withRelated: ['players', 'games'] }).then(function(matches) {
+  //   res.status(200).send(matches);
+  // });
 });
 
 app.post('/players', function(req, res) {
-  Players.create({name: req.body.name, cohort: req.body.cohort, userId: 0}).then(player => res.status(201).send(JSON.stringify(player)));
+  helpers.checkAuth(req, (user) => {
+    Players.create({name: req.body.name, cohort: req.body.cohort, userId: user.id}).then(player => res.status(201).send(JSON.stringify(player)));
+  })
+  
 });
 
 app.post('/games', function(req, res) {
-  Games.create({win: req.body.win, winType: req.body.winType, userId: 0}).then(game => {
+  helpers.checkAuth(req, (user) => {
+   Games.create({win: req.body.win, winType: req.body.winType, userId: user.id}).then(game => {
     var players = req.body.players;
     var count = 0;
     var total = Object.keys(players).length;
@@ -90,12 +121,14 @@ app.post('/games', function(req, res) {
           res.status(201).send(JSON.stringify(saved));
         }
       });
-    }
-    
-  });
+    }    
+  });   
+  })
+
 });
-
-
+app.post('/signin', helpers.signin);
+app.post('/signup', helpers.signup);
+app.post('/signedin', helpers.checkAuth);
 // app.get('/login', 
 // function(req, res) {
 //   console.log(req.headers['referer']);
@@ -107,68 +140,68 @@ app.post('/games', function(req, res) {
   
 // });
 
-app.post('/login', 
-  function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+// app.post('/login', 
+//   function (req, res) {
+//     var username = req.body.username;
+//     var password = req.body.password;
 
-    new User({username: username}).fetch().then(function(found) {
-      if (found) {
-        new User({username: username, password: util.getBCryptPW(found.get('salt'), password)}).fetch().then(function(found) {
-          if (found) {
-            req.session.regenerate(function() {
-              req.session.user = username;
-              res.status(200).send();
-            });
-          } else {
-            res.status(403).send();
-          }
-        });
+//     new User({username: username}).fetch().then(function(found) {
+//       if (found) {
+//         new User({username: username, password: util.getBCryptPW(found.get('salt'), password)}).fetch().then(function(found) {
+//           if (found) {
+//             req.session.regenerate(function() {
+//               req.session.user = username;
+//               res.status(200).send();
+//             });
+//           } else {
+//             res.status(403).send();
+//           }
+//         });
 
-      } else {
-        res.status(403).send();
-      }
-    });
+//       } else {
+//         res.status(403).send();
+//       }
+//     });
 
 
-  });
+//   });
 
-// app.get('/signup',
+// // app.get('/signup',
+// // function(req, res) {
+// //   res.render('signup');
+// // });
+
+// app.post('/signup', 
 // function(req, res) {
-//   res.render('signup');
-// });
+//   var username = req.body.username;
+//   var password = req.body.password;
 
-app.post('/signup', 
-function(req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
+//   new User({username: username}).fetch().then(function(found) {
+//     if (found) {
+//       res.status(406).send();
+//     } else {
+//       Users.create({
+//         username: username,
+//         password: password
+//       })
+//       .then(function(newUser) {
+//         req.session.regenerate(function() {
+//           req.session.user = username;
+//           res.status(200).send();
+//         });
+//       });
 
-  new User({username: username}).fetch().then(function(found) {
-    if (found) {
-      res.status(406).send();
-    } else {
-      Users.create({
-        username: username,
-        password: password
-      })
-      .then(function(newUser) {
-        req.session.regenerate(function() {
-          req.session.user = username;
-          res.status(200).send();
-        });
-      });
-
-    }
-  });
+//     }
+//   });
 
   
-});
+// });
 
-app.get('/logout', function(req, res) {
-  req.session.destroy(function() {
-    res.status(200).send();
-    //res.render('login');
-  });
-});
+// app.get('/logout', function(req, res) {
+//   req.session.destroy(function() {
+//     res.status(200).send();
+//     //res.render('login');
+//   });
+// });
 
 module.exports = app;
