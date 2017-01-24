@@ -3,11 +3,19 @@ class Player extends React.Component {
     super(props);
     this.state = {
       name: "",
-      cohort: ""
+      cohort: "",
+      errMsg: "hidden"
     }
   }
   submitPlayer () {
-
+    window.postPlayer(this.state, this.clearForm.bind(this));
+  }
+  clearForm (body) {
+    if (body === 'undefined') {
+      this.setState({errMsg: "shown"})
+    } else  {
+      this.setState({name:'', cohort:'', errMsg: "hidden"});
+    }
   }
   playerNameChange (event) {
     this.setState({name: event.target.value});
@@ -23,6 +31,7 @@ class Player extends React.Component {
         <label>Cohort</label>
         <input className="form-control" type="text" value={this.state.cohort} onChange={this.playerCohortChange.bind(this)}/>
         <button type="submit" onClick={this.submitPlayer.bind(this)} className="btn btn-primary playerBtn">Submit</button>
+        <div className={this.state.errMsg}>Failed to add player</div>
       </div> 
     );
   }

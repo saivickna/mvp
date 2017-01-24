@@ -21,19 +21,24 @@ class App extends React.Component {
     this.setState({statsActive: false, gameActive: false, playerActive: true});
   }
   render() {
-    console.log('test');
     if (this.state.playerActive) {
-      console.log('huh');
       return (
         <div>
           <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
           <Player />
         </div>
       );
+    } else if (this.state.gameActive){
+      return (
+        <div>
+          <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
+          <Game />
+        </div>
+      );
     } else {
       return (
         <Nav statsActive={this.state.statsActive} gameActive={this.state.gameActive} playerActive={this.state.playerActive} changeTabToStats={this.changeTabToStats.bind(this)} changeTabToGame={this.changeTabToGame.bind(this)} changeTabToPlayer={this.changeTabToPlayer.bind(this)}/>
-      );
+      );   
     }
   
 

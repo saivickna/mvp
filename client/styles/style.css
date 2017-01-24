@@ -13,3 +13,20 @@
   display: block;
   /*width: 100px;*/
 }
+.shown {
+  visibility: visible;
+}
+.hidden {
+  visibility: hidden;
+}
+
+.winCriteria {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: block;
+  width: auto;
+}
+
+.winCriteria label {
+  padding-left: 50px;
+}

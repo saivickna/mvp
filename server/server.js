@@ -5,7 +5,14 @@ var cookieParser = require('cookie-parser');
 var util = require('../lib/utility');
 var Games = require('../app/collections/games');
 var Players = require('../app/collections/players');
+var Match = require('../app/models/match');
+var cors = require('cors');
+var Matches = require('../app/collections/matches');
+var Promise = require('bluebird');
 var app = express();
+
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser('shhhh, very secret'));
@@ -22,6 +29,8 @@ var restrict = function (req, res, next) {
   }
 };
 
+app.options('*', cors())
+
 // app.get('/games', restrict, function(req, res) {
 //     Games.reset().query(function(qb) {
 //       qb.where('userId', '=', req.body.userId);
@@ -30,7 +39,7 @@ var restrict = function (req, res, next) {
 //     });
 // });
 
-app.get('/games', restrict, function(req, res) {
+app.get('/games', function(req, res) {
   Games.reset().fetch().then(function(games) {
     res.status(200).send(games.models);
   });
@@ -50,11 +59,28 @@ app.get('/players', function(req, res) {
   });
 });
 
-app.post('/post', function(req, res) {
-    
-  Players.create({name: req.body.name, cohort: req.body.cohort, userId: 0}).then(player => res.status(201).send(student));
+app.post('/players', function(req, res) {
+  Players.create({name: req.body.name, cohort: req.body.cohort, userId: 0}).then(player => res.status(201).send(JSON.stringify(player)));
 });
 
+app.post('/games', function(req, res) {
+  Games.create({win: req.body.win, winType: req.body.winType, userId: 0}).then(game => {
+    var players = req.body.players;
+    var count = 0;
+    var total = Object.keys(players).length;
+    for (var player in players) {
+      players[player].gameId = game.id;
+      new Match(players[player]).save()
+      .then(function (saved) {
+        count++;
+        if (count === total) {
+          res.status(201).send('');
+        }
+      });
+    }
+    
+  });
+});
 
 
 // app.get('/login', 
