@@ -1,19 +1,19 @@
 var db = require('../config');
-var Match = require('./match.js');
-var User = require('./user.js');
+require('./match.js');
+require('./user.js');
 
 var Game = db.Model.extend({
   tableName: 'games',
   hasTimestamps: true,
   matches: function () {
-    return this.hasMany(Match);
+    return this.hasMany('Match');
   },
   user: function() {
-    return this.belongsTo(User, 'userId');
+    return this.belongsTo('User', 'userId');
   },
   initialize: function() {
     
   }
 });
 
-module.exports = Game;
+module.exports = db.model('Game', Game);

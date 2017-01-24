@@ -4,6 +4,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var util = require('../lib/utility');
 var Games = require('../app/collections/games');
+var Player = require('../app/models/player');
 var Players = require('../app/collections/players');
 var Match = require('../app/models/match');
 var cors = require('cors');
@@ -56,6 +57,15 @@ app.get('/games', function(req, res) {
 app.get('/players', function(req, res) {
   Players.reset().fetch().then(function(players) {
     res.status(200).send(players.models);
+  });
+});
+
+app.get('/matches', function(req, res) {
+  Match.query(function (qb) {
+   qb.innerJoin('players', 'matches.playerId', 'players.id');
+   qb.innerJoin('games', 'matches.gameId', 'games.id');
+  }).fetchAll({ withRelated: ['players', 'games'] }).then(function(matches) {
+    res.status(200).send(matches);
   });
 });
 

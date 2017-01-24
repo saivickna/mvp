@@ -11,6 +11,7 @@ var knex = require('knex')({
   useNullAsDefault: true
 });
 var db = require('bookshelf')(knex);
+db.plugin('registry');
 
 db.knex.schema.hasTable('players').then(function(exists) {
   if (!exists) {

@@ -1,17 +1,17 @@
 var db = require('../config');
 var Promise = require('bluebird');
 var bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'));
-var Game = require('./game');
-var Player = require('./player');
+require('./game');
+require('./player');
 
 var User = db.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
   games: function () {
-    return this.hasMany(Game);
+    return this.hasMany('Game');
   },
   players: function () {
-    return this.hasMany(Player);
+    return this.hasMany('Player');
   },
   initialize: function() {
     this.on('creating', this.hashPassword);
@@ -27,4 +27,4 @@ var User = db.Model.extend({
   }
   });
 
-module.exports = User;
+module.exports = db.model('User', User);
