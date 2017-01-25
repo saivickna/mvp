@@ -73,10 +73,16 @@
 }*/
 
 
-
+.titleback {
+  background-color: #2196f3;
+}
 
 .title {
   text-align: center;
+  color: #FFFFFF;
+  font-size: 4.5rem;
+  font-weight: 300;
+  line-height: 1.1;
 }
 
 .nav {

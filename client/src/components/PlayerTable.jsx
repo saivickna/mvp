@@ -36,6 +36,11 @@ class PlayerTable extends React.Component {
   submitGame () {
     this.props.submitGame();
   }
+  setInitial (person) {
+    if (this.state.personName === '') {
+      this.setState({personName: person});
+    }
+  }
   render() {
     return (
       <div className="container">
@@ -56,7 +61,7 @@ class PlayerTable extends React.Component {
               {this.props.players.map(player => (<tr><td>{player.name}</td><td>{player.allianceRole}</td></tr>))}
               <tr>
                 <td>
-                <PlayerOptions changePerson={this.changePerson.bind(this)}/>
+                <PlayerOptions setInitial={this.setInitial.bind(this)} changePerson={this.changePerson.bind(this)}/>
                 </td>
                 <td>
                 <select onChange={this.changeRole.bind(this)} className="form-control">

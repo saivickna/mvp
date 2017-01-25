@@ -11,6 +11,7 @@ class PlayerOptions extends React.Component {
       if (body === 'undefined') {
       } else {
         this.setState({players: body});
+        this.props.setInitial(body[0].name);
       }
     });
   }
